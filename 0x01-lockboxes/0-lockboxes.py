@@ -1,6 +1,18 @@
 #!/usr/bin/python3
+"""
+Module to determine if all boxes can be unlocked
+"""
 
 def canUnlockAll(boxes):
+    """
+    Determines if all the boxes can be unlocked.
+
+    Args:
+        boxes (list of lists): A list where each element is a list of keys.
+
+    Returns:
+        bool: True if all boxes can be unlocked, False otherwise.
+    """
     # List to keep track of which boxes have been opened
     opened = [False] * len(boxes)
     opened[0] = True  # Box 0 is always open
