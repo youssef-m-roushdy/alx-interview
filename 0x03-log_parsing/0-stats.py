@@ -1,9 +1,6 @@
 #!/usr/bin/python3
 """
-Script to read lines from stdin,
-track file size and status occurrences,
-and print statistics after every 10 lines
-or when interrupted with CTRL + C.
+log parsing
 """
 import sys
 import signal
@@ -19,7 +16,7 @@ line_count = 0
 
 def print_stats():
     """
-    Print the total file size and the count of each HTTP status code.
+    helper function to display stats
     """
     print("File size: {}".format(file_size))
     for status in sorted(status_occurrences.keys()):
