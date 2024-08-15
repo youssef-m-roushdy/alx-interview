@@ -49,7 +49,7 @@ try:
             line_count += 1
             status = match.group(1)
             file_size += int(match.group(2))
-            if status in status_occurrences:
+            if status.isdecimal():
                 status_occurrences[status] += 1
 
             if line_count % 10 == 0:
