@@ -39,7 +39,7 @@ signal.signal(signal.SIGINT, handle_interrupt)
 
 for line in sys.stdin:
     try:
-        if log_regex.match(line):   
+        if log_regex.match(line):
             status = line.split(' ')[-2]
             total_size += int(line.split(' ')[-1])
             if status in status_occurrences:
