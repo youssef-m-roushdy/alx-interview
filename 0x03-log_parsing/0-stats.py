@@ -9,14 +9,11 @@ import sys
 import signal
 import re
 
+
+log_regex = re.compile(r'(?P<ip>\d{1,3}(?:\.\d{1,3}){3}) - \[(?P<date>.*?)\] "GET /projects/260 HTTP/1.1" (?P<status_code>\d{3}) (?P<file_size>\d+)')
 status_occurrences = {}
 total_size = 0
 line_count = 0
-
-
-log_regex = re.compile(
-    r'^\S+ - \[\S+\] "GET /projects/260 HTTP/1.1" (\d{3}) (\d+)$'
-)
 
 
 def print_stats():
@@ -41,17 +38,19 @@ signal.signal(signal.SIGINT, handle_interrupt)
 
 
 for line in sys.stdin:
-    match = log_regex.match(line)
-    if match:
-        status = line.split(' ')[-2]
-        file_size = int(line.split(' ')[-1])
+    try:
+        if log_regex.match(line):   
+            status = line.split(' ')[-2]
+            total_size += int(line.split(' ')[-1])
+            if status in status_occurrences:
+                status_occurrences[status] += 1
+            else:
+                status_occurrences[status] = 1
+            line_count += 1
 
-        total_size += file_size
-        if status in status_occurrences:
-            status_occurrences[status] += 1
-        line_count += 1
-
-        if line_count % 10 == 0:
-            print_stats()
+            if line_count % 10 == 0:
+                print_stats()
+    except Exception:
+        continue
 
 print_stats()
