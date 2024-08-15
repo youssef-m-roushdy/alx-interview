@@ -7,11 +7,16 @@ or when interrupted with CTRL + C.
 """
 import sys
 import signal
+import re
 
-
-status_occurrences = {}
+status_occurrences = {str(code): 0 for code in [200, 301, 400, 401, 403, 404, 405, 500]}
 total_size = 0
 line_count = 0
+
+
+log_regex = re.compile(
+    r'^\S+ - \[\S+\] "GET /projects/260 HTTP/1.1" (\d{3}) (\d+)$'
+)
 
 
 def print_stats():
@@ -36,18 +41,16 @@ signal.signal(signal.SIGINT, handle_interrupt)
 
 
 for line in sys.stdin:
-    try:
-        status = line.split(' ')[-2]
-        total_size += int(line.split(' ')[-1])
-        if status in status_occurrences:
-            status_occurrences[status] += 1
-        else:
-            status_occurrences[status] = 1
+    match = log_regex.match(line)
+    if match:
+        status = match.group(1)
+        file_size = int(match.group(2))
+
+        total_size += file_size
+        status_occurrences[status] += 1
         line_count += 1
 
         if line_count % 10 == 0:
             print_stats()
-    except Exception:
-        continue
 
 print_stats()
