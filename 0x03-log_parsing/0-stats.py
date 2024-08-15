@@ -30,7 +30,7 @@ if __name__ == "__main__":
 
 def handle_interrupt(signal, frame):
     """
-    Handle SIGINT (CTRL + C) by printing the stats and exiting the program.
+    handle interruption
     """
     print_stats()
     sys.exit(0)
