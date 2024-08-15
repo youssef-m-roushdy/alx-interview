@@ -9,7 +9,7 @@ import sys
 import signal
 import re
 
-status_occurrences = {str(code): 0 for code in [200, 301, 400, 401, 403, 404, 405, 500]}
+status_occurrences = {}
 total_size = 0
 line_count = 0
 
@@ -43,8 +43,8 @@ signal.signal(signal.SIGINT, handle_interrupt)
 for line in sys.stdin:
     match = log_regex.match(line)
     if match:
-        status = match.group(1)
-        file_size = int(match.group(2))
+        status = line.split(' ')[-2]
+        file_size = int(line.split(' ')[-1])
 
         total_size += file_size
         status_occurrences[status] += 1
