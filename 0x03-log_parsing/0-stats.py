@@ -47,7 +47,8 @@ for line in sys.stdin:
         file_size = int(line.split(' ')[-1])
 
         total_size += file_size
-        status_occurrences[status] += 1
+        if status in status_occurrences:
+            status_occurrences[status] += 1
         line_count += 1
 
         if line_count % 10 == 0:
