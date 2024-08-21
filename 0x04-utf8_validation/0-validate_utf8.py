@@ -8,29 +8,33 @@ def validUTF8(data: list) -> bool:
     """
         Function validUTF8 to validate the utf-8 encoding
     """
+    num_bytes = 0
+
+    # Masks to check the most significant bits
+    mask1 = 1 << 7  # 10000000
+    mask2 = 1 << 6  # 01000000
+
     for byte in data:
-        if byte < 0x00 or byte > 0xFF:
-            return False
+        mask = 1 << 7
+        if num_bytes == 0:
+            # Count the number of leading 1's in the current byte
+            while byte & mask:
+                num_bytes += 1
+                mask >>= 1
 
-    i = 0
-    while i < len(data):
-        byte1 = data[i]
+            # If num_bytes is 0, then it's a 1-byte character
+            if num_bytes == 0:
+                continue
 
-        if byte1 < 0x80:
-            i += 1
-        elif 0xC2 <= byte1 <= 0xDF:
-            if i + 1 >= len(data) or not (0x80 <= data[i + 1] <= 0xBF):
+            # UTF-8 characters can only be 1 to 4 bytes long
+            if num_bytes == 1 or num_bytes > 4:
                 return False
-            i += 2
-        elif 0xE0 <= byte1 <= 0xEF:
-            if i + 2 >= len(data) or not (0x80 <= data[i + 1] <= 0xBF) or not (0x80 <= data[i + 2] <= 0xBF):
-                return False
-            i += 3
-        elif 0xF0 <= byte1 <= 0xF4:
-            if i + 3 >= len(data) or not (0x80 <= data[i + 1] <= 0xBF) or not (0x80 <= data[i + 2] <= 0xBF) or not (0x80 <= data[i + 3] <= 0xBF):
-                return False
-            i += 4
         else:
-            return False
+            # If this byte does not start with '10', then it's not valid
+            if not (byte & mask1 and not (byte & mask2)):
+                return False
 
-    return True
+        num_bytes -= 1
+
+    # If num_bytes is not 0, then we have an incomplete character at the end
+    return num_bytes == 0
