@@ -11,12 +11,11 @@ def validUTF8(data: list) -> bool:
     for byte in data:
         if byte < 0x00 or byte > 0xFF:
             return False
-        
-    # If all bytes are valid, proceed with UTF-8 validation
+
     i = 0
     while i < len(data):
         byte1 = data[i]
-        
+
         if byte1 < 0x80:
             i += 1
         elif 0xC2 <= byte1 <= 0xDF:
@@ -33,5 +32,5 @@ def validUTF8(data: list) -> bool:
             i += 4
         else:
             return False
-        
+
     return True
