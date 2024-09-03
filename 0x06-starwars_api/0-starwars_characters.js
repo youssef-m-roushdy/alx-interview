@@ -7,8 +7,7 @@ const getFilmCharacterName = (characterApi) => {
     if (error) {
       throw error;
     } else {
-      const data = JSON.parse(body);
-      console.log(data.name);
+      console.log(JSON.parse(body).name);
     }
   });
 };
@@ -17,8 +16,8 @@ request.get(`https://swapi-api.hbtn.io/api/films/${process.argv[2]}`, (error, re
   if (error) {
     throw error;
   } else {
-    const data = JSON.parse(body);
-    data.characters.forEach((character) => {
+    const data = JSON.parse(body).characters;
+    data.forEach((character) => {
       getFilmCharacterName(character);
     });
   }
