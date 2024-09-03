@@ -6,7 +6,6 @@ const getFilmCharacterName = (characterApi) => {
   request.get(characterApi, (error, response, body) => {
     if (error) {
       console.error('Error occurred:', error);
-      return;
     } else {
       const data = JSON.parse(body);
       console.log(data.name);
@@ -19,7 +18,6 @@ const getFilmApiCharacters = () => {
     (error, response, body) => {
       if (error) {
         console.error('Error occurred:', error);
-        return;
       } else {
         const data = JSON.parse(body);
         data.characters.forEach((character) => {
