@@ -2,12 +2,14 @@
 
 const request = require('request');
 
-const getFilmCharacterName = (characterApi) => {
-  request.get(characterApi, (error, response, body) => {
+const getFilmCharacterName = (characterApiList, i) => {
+  if (i === characterApiList.length) return;
+  request.get(characterApiList[i], (error, response, body) => {
     if (error) {
       throw error;
     } else {
       console.log(JSON.parse(body).name);
+      getFilmCharacterName(characterApiList, i + 1);
     }
   });
 };
@@ -16,9 +18,7 @@ request.get(`https://swapi-api.hbtn.io/api/films/${process.argv[2]}`, (error, re
   if (error) {
     throw error;
   } else {
-    const data = JSON.parse(body).characters;
-    data.forEach((character) => {
-      getFilmCharacterName(character);
-    });
+    const characterApiList = JSON.parse(body).characters;
+    getFilmCharacterName(characterApiList, 0);
   }
 });
