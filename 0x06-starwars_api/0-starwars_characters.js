@@ -13,18 +13,13 @@ const getFilmCharacterName = (characterApi) => {
   });
 };
 
-const getFilmApiCharacters = () => {
-  request.get(`https://swapi-api.hbtn.io/api/films/${process.argv[2]}`,
-    (error, response, body) => {
-      if (error) {
-        throw error;
-      } else {
-        const data = JSON.parse(body);
-        data.characters.forEach((character) => {
-          getFilmCharacterName(character);
-        });
-      }
+request.get(`https://swapi-api.hbtn.io/api/films/${process.argv[2]}`, (error, response, body) => {
+  if (error) {
+    throw error;
+  } else {
+    const data = JSON.parse(body);
+    data.characters.forEach((character) => {
+      getFilmCharacterName(character);
     });
-};
-
-getFilmApiCharacters();
+  }
+});
