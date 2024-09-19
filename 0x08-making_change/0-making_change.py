@@ -15,6 +15,8 @@ def makeChange(coins, total):
         a = d.pop(0)
 
         for coin in coins:
+            if coin == 0:
+                continue
             new_nm = a['nm'] + 1
             new_nt = coin + a['nt']
 
