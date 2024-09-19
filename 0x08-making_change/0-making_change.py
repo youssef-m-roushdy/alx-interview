@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 from collections import deque
 """Determines the minimum number of coins needed to meet a given tota
 """
