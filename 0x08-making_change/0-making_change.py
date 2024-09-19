@@ -1,7 +1,6 @@
 #!/usr/bin/python3
+"""Defines the makeChange function to determine the minimum number of coins."""
 from collections import deque
-"""Determines the minimum number of coins needed to meet a given tota
-"""
 
 
 def makeChange(coins, total):
