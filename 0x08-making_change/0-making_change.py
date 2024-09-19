@@ -1,5 +1,6 @@
-#!/usr/bin/python3
-"""Defines the makeChange function to determine the minimum number of coins."""
+from collections import deque
+"""Determines the minimum number of coins needed to meet a given tota
+"""
 
 
 def makeChange(coins, total):
@@ -9,22 +10,22 @@ def makeChange(coins, total):
     if total <= 0:
         return 0
 
-    d = [{'nm': 0, 'nt': 0}]
-    visited = set((0, 0))  # Ensure proper spacing after commas
+    # Queue to store states of (number of coins used, current total)
+    d = deque([(0, 0)])  # (number of coins, current total)
+
+    # Set to track visited total amounts
+    visited = set([0])  # Only track total, since BFS ensures minimum coins
+
     while d:
-        a = d.pop(0)
+        num_coins, curr_total = d.popleft()
 
         for coin in coins:
-            if coin == 0:
-                continue
-            new_nm = a['nm'] + 1
-            new_nt = coin + a['nt']
+            new_total = curr_total + coin
 
-            if new_nt < total and (new_nm, new_nt) not in visited:
-                visited.add((new_nm, new_nt))
-                d.append({'nm': new_nm, 'nt': new_nt})
+            if new_total == total:
+                return num_coins + 1
+            if new_total < total and new_total not in visited:
+                visited.add(new_total)
+                d.append((num_coins + 1, new_total))
 
-            if new_nt == total:
-                return new_nm
-
-    return -1
+    return -1  # If no combination can form the total
