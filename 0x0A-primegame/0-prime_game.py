@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 def is_prime_sieve(n):
     """Generates a list of booleans indicating if numbers up to n are prime."""
     sieve = [True] * (n + 1)
